@@ -1,0 +1,15 @@
+{
+  "name": "dls-sim-rs",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "dls_sim_rs_bg.wasm",
+    "dls_sim_rs.js",
+    "dls_sim_rs.d.ts"
+  ],
+  "main": "dls_sim_rs.js",
+  "types": "dls_sim_rs.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
