@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -24,115 +25,76 @@ ChartJS.register(
 );
 
 const Graphs = ({ intensityData, correlationData, distributionData }) => {
+    const { t } = useTranslation();
 
-    const intensityOptions = {
+    const correlationOptions = useMemo(() => ({
         responsive: true,
+        maintainAspectRatio: false,
         animation: false,
         plugins: {
             legend: { display: false },
-            title: { display: true, text: 'Scattered Intensity I(t)' },
-        },
-        scales: {
-            x: {
+            title: {
                 display: true,
-                title: { display: true, text: 'Time (frames)', color: '#94a3b8' },
-                ticks: { color: '#94a3b8' }
+                text: t('graphs.intensityCorrelation'),
+                color: '#f8fafc',
+                font: { size: 14, weight: 'bold' }
             },
-            y: {
-                min: 0.8,
-                title: { display: true, text: 'Intensity (a.u.)', color: '#94a3b8' },
-                ticks: { color: '#94a3b8' }
-            }
-        },
-        elements: {
-            point: { radius: 0 }
-        }
-    };
-
-    const correlationOptions = {
-        responsive: true,
-        animation: false,
-        plugins: {
-            legend: { display: false },
-            title: { display: true, text: 'Intensity Autocorrelation g2(τ)' },
         },
         scales: {
             x: {
                 type: 'logarithmic',
-                title: { display: true, text: 'Lag time τ (s)', color: '#94a3b8' },
+                title: { display: true, text: t('graphs.delayTime'), color: '#94a3b8' },
                 ticks: { color: '#94a3b8' },
-                min: 1e-5,
-                max: 0.1
+                grid: { color: 'rgba(148, 163, 184, 0.1)' }
             },
             y: {
                 min: 0.8,
-                max: 2,
-                title: { display: true, text: 'g2(τ)', color: '#94a3b8' },
-                ticks: { color: '#94a3b8' }
+                max: 2.0,
+                title: { display: true, text: t('graphs.correlation'), color: '#94a3b8' },
+                ticks: { color: '#94a3b8' },
+                grid: { color: 'rgba(148, 163, 184, 0.1)' }
             }
         },
         elements: {
-            point: { radius: 2 }
+            point: { radius: 0 },
+            line: { borderWidth: 2 }
         }
-    };
+    }), [t]);
 
-    const distributionOptions = {
+    const distributionOptions = useMemo(() => ({
         responsive: true,
+        maintainAspectRatio: false,
         animation: false,
         plugins: {
             legend: { display: false },
-            title: { display: true, text: 'Size Distribution' },
-            tooltip: {
-                enabled: true,
-                callbacks: {
-                    title: (context) => {
-                        const val = context[0].parsed.x;
-                        return `Diameter: ${val.toFixed(1)} nm`;
-                    },
-                    label: (context) => {
-                        return `Density: ${context.parsed.y.toFixed(4)}`;
-                    }
-                }
-            }
-        },
-        interaction: {
-            mode: 'nearest',
-            axis: 'x',
-            intersect: false
+            title: {
+                display: true,
+                text: t('graphs.sizeDistribution'),
+                color: '#f8fafc',
+                font: { size: 14, weight: 'bold' }
+            },
         },
         scales: {
             x: {
-                type: 'logarithmic',
-                title: { display: true, text: 'Diameter (nm)', color: '#94a3b8' },
+                type: 'linear',
+                min: 0,
+                max: 1200,
+                title: { display: true, text: t('graphs.particleDiameterNm'), color: '#94a3b8' },
                 ticks: { color: '#94a3b8' },
-                min: 1,
-                max: 10000
+                grid: { color: 'rgba(148, 163, 184, 0.1)' }
             },
             y: {
-                title: { display: true, text: 'Rel. Abundance', color: '#94a3b8' },
-                ticks: { display: false } // Normalize visual
+                title: { display: true, text: t('graphs.distribution'), color: '#94a3b8' },
+                ticks: { color: '#94a3b8' },
+                grid: { color: 'rgba(148, 163, 184, 0.1)' }
             }
         },
         elements: {
-            point: { radius: 0 }
+            point: { radius: 0 },
+            line: { borderWidth: 2 }
         }
-    };
+    }), [t]);
 
-    const intensityChartData = useMemo(() => ({
-        labels: intensityData.map((_, i) => i),
-        datasets: [
-            {
-                label: 'Intensity',
-                data: intensityData,
-                borderColor: 'rgb(0, 212, 255)',
-                backgroundColor: 'rgba(0, 212, 255, 0.5)',
-                borderWidth: 1,
-            },
-        ],
-    }), [intensityData]);
-
-    // Assume lags are passed or calculated. For visualization, we use index as proxy or pass real time.
-    // Worker DT = 0.000002s
     const dt = 0.000002;
 
     const correlationChartData = useMemo(() => {
@@ -171,9 +133,6 @@ const Graphs = ({ intensityData, correlationData, distributionData }) => {
 
     return (
         <div className="graphs-view">
-            <div className="graph-container" style={{ gridColumn: '1 / -1', height: '200px' }}>
-                <Line options={intensityOptions} data={intensityChartData} />
-            </div>
             <div className="graph-container" style={{ height: '300px' }}>
                 <Line options={correlationOptions} data={correlationChartData} />
             </div>

@@ -60,6 +60,7 @@ function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [runtime, setRuntime] = useState(0);
   const [samples, setSamples] = useState(0);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const startTimeRef = useRef(null);
 
   const smoothedDiameterRef = useRef(null);
@@ -397,6 +398,8 @@ function App() {
           onStop={handleStop}
           onReset={handleReset}
           runtime={runtime}
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
           samples={samples}
         />
 

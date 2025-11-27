@@ -1,0 +1,31 @@
+{
+    "common": {
+        "appTitle": "Simulador DLS",
+        "start": "Iniciar",
+        "stop": "Detener",
+        "reset": "Reiniciar"
+    },
+    "controls": {
+        "temperature": "Temperatura (°C)",
+        "viscosity": "Viscosidad (Pa·s)",
+        "particleCount": "Cantidad de Partículas",
+        "particleDiameter": "Diámetro de Partícula (nm)",
+        "polydispersity": "Índice de Polidispersidad (PDI)",
+        "laserWavelength": "Longitud de Onda del Láser (nm)"
+    },
+    "stats": {
+        "liveStats": "Estadísticas en Vivo",
+        "intensity": "Intensidad",
+        "estimatedDiameter": "Diámetro Est.",
+        "runtime": "Tiempo de Ejecución",
+        "measurements": "Mediciones"
+    },
+    "graphs": {
+        "intensityCorrelation": "Función de Correlación de Intensidad g₂(τ)",
+        "sizeDistribution": "Distribución de Tamaño",
+        "delayTime": "Tiempo de Retardo (s)",
+        "particleDiameterNm": "Diámetro de Partícula (nm)",
+        "distribution": "Distribución",
+        "correlation": "Correlación"
+    }
+}
