@@ -48,14 +48,15 @@ const Graphs = ({ intensityData, correlationData, distributionData }) => {
                 title: { display: true, text: t('graphs.delayTime'), color: '#94a3b8' },
                 ticks: {
                     color: '#94a3b8',
-                    callback: function (value, index, values) {
-                        // Force stable scientific notation or specific values to prevent jitter
+                    callback: function (value) {
                         const val = Number(value);
-                        if (val === 0.00001) return '10⁻⁵';
-                        if (val === 0.0001) return '10⁻⁴';
-                        if (val === 0.001) return '10⁻³';
-                        if (val === 0.01) return '10⁻²';
-                        return ''; // Hide intermediate ticks to prevent jumping
+                        // Use epsilon for floating point comparison to prevent jitter
+                        const epsilon = 1e-9;
+                        if (Math.abs(val - 0.00001) < epsilon) return '10⁻⁵';
+                        if (Math.abs(val - 0.0001) < epsilon) return '10⁻⁴';
+                        if (Math.abs(val - 0.001) < epsilon) return '10⁻³';
+                        if (Math.abs(val - 0.01) < epsilon) return '10⁻²';
+                        return '';
                     }
                 },
                 grid: { color: 'rgba(148, 163, 184, 0.1)' }
@@ -131,11 +132,10 @@ const Graphs = ({ intensityData, correlationData, distributionData }) => {
 
     const distributionChartData = useMemo(() => {
         return {
-            labels: distributionData.map(d => d.x),
             datasets: [
                 {
                     label: 'Distribution',
-                    data: distributionData.map(d => d.y),
+                    data: distributionData, // Already in {x, y} format from App.jsx
                     backgroundColor: 'rgba(34, 197, 94, 0.5)',
                     borderColor: 'rgb(34, 197, 94)',
                     borderWidth: 2,
