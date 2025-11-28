@@ -37,6 +37,7 @@ const Controls = ({ params, setParams, isRunning, onStart, onStop, onReset, runt
                     <HamburgerMenu isOpen={false} onClick={() => setIsSidebarOpen(true)} />
                 </div>
             )}
+            {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>}
             <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-header">
                     <HamburgerMenu isOpen={isSidebarOpen} onClick={() => setIsSidebarOpen(!isSidebarOpen)} />
@@ -45,7 +46,6 @@ const Controls = ({ params, setParams, isRunning, onStart, onStop, onReset, runt
                         <LanguageSelector />
                     </div>
                 </div>
-                {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>}
 
                 <div className="control-group" style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem' }}>
                     {!isRunning ? (
