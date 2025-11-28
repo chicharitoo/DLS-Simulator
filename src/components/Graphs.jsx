@@ -43,6 +43,8 @@ const Graphs = ({ intensityData, correlationData, distributionData }) => {
         scales: {
             x: {
                 type: 'logarithmic',
+                min: 0.00001,
+                max: 0.01,
                 title: { display: true, text: t('graphs.delayTime'), color: '#94a3b8' },
                 ticks: { color: '#94a3b8' },
                 grid: { color: 'rgba(148, 163, 184, 0.1)' }
