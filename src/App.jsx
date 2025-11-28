@@ -390,28 +390,35 @@ function App() {
   return (
     <ErrorBoundary>
       <div className="app-container">
-        <Controls
-          params={params}
-          setParams={setParams}
+        <Dashboard
           isRunning={isRunning}
           onStart={handleStart}
           onStop={handleStop}
           onReset={handleReset}
           runtime={runtime}
+          samples={samples}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
-          samples={samples}
         />
 
-        <div className="main-content">
-          <div className="main-view">
-            <ParticleView positions={positions} boxDimensions={BOX_DIMENSIONS} wavelength={params.wavelength} />
-          </div>
-          <Graphs
-            intensityData={intensityHistory}
-            correlationData={correlationData}
-            distributionData={distributionData}
+        <div className="content-wrapper">
+          <Controls
+            params={params}
+            setParams={setParams}
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
           />
+
+          <div className="main-content">
+            <div className="main-view">
+              <ParticleView positions={positions} boxDimensions={BOX_DIMENSIONS} wavelength={params.wavelength} />
+            </div>
+            <Graphs
+              intensityData={intensityHistory}
+              correlationData={correlationData}
+              distributionData={distributionData}
+            />
+          </div>
         </div>
       </div>
     </ErrorBoundary>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
-import HamburgerMenu from './HamburgerMenu';
 
-const Controls = ({ params, setParams, isRunning, onStart, onStop, onReset, runtime = 0, samples = 0, isSidebarOpen = false, setIsSidebarOpen }) => {
+const Controls = ({ params, setParams, isSidebarOpen, setIsSidebarOpen }) => {
     const { t } = useTranslation();
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         let val = parseFloat(value);
@@ -32,70 +32,13 @@ const Controls = ({ params, setParams, isRunning, onStart, onStop, onReset, runt
 
     return (
         <>
-            {!isSidebarOpen && (
-                <div style={{ position: 'fixed', top: '0.5rem', left: '0.5rem', zIndex: 50 }}>
-                    <HamburgerMenu isOpen={false} onClick={() => setIsSidebarOpen(true)} />
-                </div>
-            )}
             {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>}
             <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-header">
-                    <HamburgerMenu isOpen={isSidebarOpen} onClick={() => setIsSidebarOpen(!isSidebarOpen)} />
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
-                        <h1>{t('common.appTitle')}</h1>
+                    <h2>{t('common.settings')}</h2>
+                    <div className="mobile-only">
                         <LanguageSelector />
                     </div>
-                </div>
-
-                <div className="control-group" style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem' }}>
-                    {!isRunning ? (
-                        <button
-                            onClick={onStart}
-                            style={{
-                                flex: 1,
-                                padding: '0.5rem',
-                                background: '#22c55e',
-                                border: 'none',
-                                borderRadius: '6px',
-                                color: 'white',
-                                cursor: 'pointer',
-                                fontWeight: 'bold'
-                            }}
-                        >
-                            {t('common.start')}
-                        </button>
-                    ) : (
-                        <button
-                            onClick={onStop}
-                            style={{
-                                flex: 1,
-                                padding: '0.5rem',
-                                background: '#eab308',
-                                border: 'none',
-                                borderRadius: '6px',
-                                color: 'white',
-                                cursor: 'pointer',
-                                fontWeight: 'bold'
-                            }}
-                        >
-                            {t('common.stop')}
-                        </button>
-                    )}
-                    <button
-                        onClick={onReset}
-                        style={{
-                            flex: 1,
-                            padding: '0.5rem',
-                            background: '#ef4444',
-                            border: 'none',
-                            borderRadius: '6px',
-                            color: 'white',
-                            cursor: 'pointer',
-                            fontWeight: 'bold'
-                        }}
-                    >
-                        {t('common.reset')}
-                    </button>
                 </div>
 
                 <div className="control-group">
@@ -103,7 +46,7 @@ const Controls = ({ params, setParams, isRunning, onStart, onStop, onReset, runt
                         <label>{t('controls.temperature')}</label>
                         <input
                             type="number"
-                            name="temperature" // Reusing name for logic, but value is C
+                            name="temperature"
                             value={Math.round((params.temperature - 273.15) * 10) / 10}
                             onChange={(e) => setParams(prev => ({ ...prev, temperature: parseFloat(e.target.value) + 273.15 }))}
                             style={{ width: '60px', padding: '2px' }}
@@ -230,26 +173,6 @@ const Controls = ({ params, setParams, isRunning, onStart, onStop, onReset, runt
                         value={params.wavelength}
                         onChange={handleChange}
                     />
-                </div>
-
-                <div className="stats-panel">
-                    <h3>{t('stats.liveStats')}</h3>
-                    <div className="stat-item">
-                        <span className="stat-label">{t('stats.intensity')}</span>
-                        <span className="stat-value" id="stat-intensity">0</span>
-                    </div>
-                    <div className="stat-item">
-                        <span className="stat-label">{t('stats.estimatedDiameter')}</span>
-                        <span className="stat-value" id="stat-diameter">--</span>
-                    </div>
-                    <div className="stat-item">
-                        <span className="stat-label">{t('stats.runtime')}</span>
-                        <span className="stat-value">{runtime.toFixed(1)} s</span>
-                    </div>
-                    <div className="stat-item">
-                        <span className="stat-label">{t('stats.measurements')}</span>
-                        <span className="stat-value">{samples.toLocaleString()}</span>
-                    </div>
                 </div>
             </div>
         </>

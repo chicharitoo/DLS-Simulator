@@ -3,7 +3,8 @@
         "appTitle": "Simulador DLS",
         "start": "Iniciar",
         "stop": "Detener",
-        "reset": "Reiniciar"
+        "reset": "Reiniciar",
+        "settings": "Ajustes"
     },
     "controls": {
         "temperature": "Temperatura (°C)",
