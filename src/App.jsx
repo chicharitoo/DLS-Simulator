@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Dashboard from './components/Dashboard';
 import Controls from './components/Controls';
 import ParticleView from './components/ParticleView';
 import Graphs from './components/Graphs';
