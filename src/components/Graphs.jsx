@@ -46,7 +46,18 @@ const Graphs = ({ intensityData, correlationData, distributionData }) => {
                 min: 0.00001,
                 max: 0.01,
                 title: { display: true, text: t('graphs.delayTime'), color: '#94a3b8' },
-                ticks: { color: '#94a3b8' },
+                ticks: {
+                    color: '#94a3b8',
+                    callback: function (value, index, values) {
+                        // Force stable scientific notation or specific values to prevent jitter
+                        const val = Number(value);
+                        if (val === 0.00001) return '10⁻⁵';
+                        if (val === 0.0001) return '10⁻⁴';
+                        if (val === 0.001) return '10⁻³';
+                        if (val === 0.01) return '10⁻²';
+                        return ''; // Hide intermediate ticks to prevent jumping
+                    }
+                },
                 grid: { color: 'rgba(148, 163, 184, 0.1)' }
             },
             y: {
@@ -100,11 +111,12 @@ const Graphs = ({ intensityData, correlationData, distributionData }) => {
     const dt = 0.000002;
 
     const correlationChartData = useMemo(() => {
-        const labels = correlationData.map((_, i) => i * dt).filter((_, i) => i > 0);
-        const data = correlationData.filter((_, i) => i > 0);
+        // Use {x, y} format for better stability with log scales
+        const data = correlationData
+            .map((val, i) => ({ x: i * dt, y: val }))
+            .filter(pt => pt.x > 0);
 
         return {
-            labels: labels,
             datasets: [
                 {
                     label: 'Experimental g2(τ)',
